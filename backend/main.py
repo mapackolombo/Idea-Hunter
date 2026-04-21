@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 import httpx
 import os
 
@@ -7,12 +8,17 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In produzione: metti il tuo dominio Vercel
-    allow_methods=["POST"],
-    allow_headers=["Content-Type"],
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
+
+@app.options("/api/hunt")
+async def options_hunt():
+    return JSONResponse(content={}, status_code=200)
 
 @app.post("/api/hunt")
 async def hunt(request: Request):
