@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 // In produzione: sostituisci con il tuo URL Railway, es. https://idea-hunter.up.railway.app/api/hunt
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
 const USE_PROXY = true; //v2
-const PROXY_URL = "https://idea-hunter.onrender.com";
+const PROXY_URL = "https://idea-hunter.onrender.com/api/hunt";
 
 const MARKETS = [
   "Italia", "Francia", "Germania", "Spagna", "Portogallo",
