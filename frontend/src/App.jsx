@@ -165,7 +165,7 @@ Segui rigorosamente il processo in 4 fasi. Usa il web search per ogni fase. Non 
         method: "POST",
         headers,
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
+          model: "claude-sonnet-4-6",
           max_tokens: 4000,
           system: SYSTEM_PROMPT,
           tools: [{ type: "web_search_20250305", name: "web_search" }],
