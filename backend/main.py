@@ -1,32 +1,32 @@
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 import httpx
 import os
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
+
+def cors_headers():
+    return {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+    }
 
 @app.options("/api/hunt")
 async def options_hunt():
-    return JSONResponse(content={}, status_code=200)
+    return JSONResponse(content={}, headers=cors_headers())
 
 @app.post("/api/hunt")
 async def hunt(request: Request):
     if not ANTHROPIC_API_KEY:
-        raise HTTPException(status_code=500, detail="API key non configurata")
-
+        return JSONResponse(
+            content={"error": "API key non configurata"},
+            status_code=500,
+            headers=cors_headers()
+        )
     body = await request.json()
-
     async with httpx.AsyncClient(timeout=120) as client:
         response = await client.post(
             "https://api.anthropic.com/v1/messages",
@@ -37,12 +37,11 @@ async def hunt(request: Request):
             },
             json=body,
         )
-
-    if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=response.text)
-
-    return response.json()
+    return JSONResponse(
+        content=response.json(),
+        headers=cors_headers()
+    )
 
 @app.get("/")
 def root():
-    return {"status": "ok"}
+    return JSONResponse(content={"status": "ok"}, headers=cors_headers())
