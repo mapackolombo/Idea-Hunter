@@ -52,7 +52,7 @@ Solo se il gap è confermato, produci un brief strutturato con:
 - Rischi principali
 - Stima realistica di potenziale (utenti, revenue)
 
-Sii onesto e critico. Non inventare dati. Se non trovi gap reali dillo chiaramente.
+Sii onesto e critico. Non inventare dati. Se non trovi gap reali dillo chiaramente. Usa il web search MASSIMO 3 volte in totale. 
 Scrivi in italiano. Usa emoji sparingly per strutturare la risposta. Formatta con markdown.`;
 
 function TypingDots() {
@@ -166,7 +166,7 @@ Segui rigorosamente il processo in 4 fasi. Usa il web search per ogni fase. Non 
         headers,
         body: JSON.stringify({
           model: "claude-sonnet-4-6",
-          max_tokens: 4000,
+          max_tokens: 1500,
           system: SYSTEM_PROMPT,
           tools: [{ type: "web_search_20250305", name: "web_search" }],
           messages: [{ role: "user", content: userPrompt }],
