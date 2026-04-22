@@ -183,11 +183,17 @@ Segui rigorosamente il processo in 4 fasi. Usa il web search per ogni fase. Non 
 
       // Extract text from content blocks
       let fullText = "";
-      for (const block of data.content) {
-        if (block.type === "text") {
-          fullText += block.text;
+      const content = data?.content;
+      if (Array.isArray(content)) {
+        for (const block of content) {
+          if (block.type === "text") {
+            fullText += block.text;
+          }
         }
+      } else {
+        fullText = JSON.stringify(data);
       }
+      if (!fullText) throw new Error("Risposta vuota dal server");
 
       // Animate text display
       setPhase(1);
